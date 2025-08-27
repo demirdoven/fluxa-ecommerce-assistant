@@ -1,1 +1,1 @@
-sensay-chat-plg
+## fluxa ecommerce assistant
