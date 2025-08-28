@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect, type FormEvent } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 type Msg = { id: number; text: string; sender: "user" | "bot" };
 
@@ -443,18 +445,43 @@ export default function ChatboxClient() {
                   key={m.id}
                   className={`flex ${m.sender === "user" ? "justify-end" : "justify-start"}`}
                 >
-                  <div
-                    className={`max-w-[80%] p-3 rounded-lg ${
-                      m.sender === "user"
-                        ? "bg-indigo-100 text-gray-800 rounded-br-none"
-                        : "bg-gray-100 text-gray-800 rounded-bl-none"
-                    }`}
-                  >
-                    {m.text}
-                    <div className="text-xs text-gray-500 mt-1 text-right">
-                      {new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                  {m.sender === "bot" && m.text === "…" ? (
+                    // Typing indicator bubble
+                    <div
+                      className="max-w-[80%] p-3 rounded-lg bg-gray-100 text-gray-800 rounded-bl-none"
+                      aria-live="polite"
+                      aria-label="Assistant is typing"
+                    >
+                      <div className="flex items-center gap-1">
+                        <span className="inline-block w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0ms]"></span>
+                        <span className="inline-block w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:150ms]"></span>
+                        <span className="inline-block w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:300ms]"></span>
+                        <span className="ml-2 text-xs text-gray-500 select-none">Typing</span>
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div
+                      className={`max-w-[80%] p-3 rounded-lg ${
+                        m.sender === "user"
+                          ? "bg-indigo-100 text-gray-800 rounded-br-none"
+                          : "bg-gray-100 text-gray-800 rounded-bl-none"
+                      }`}
+                    >
+                      {m.sender === "bot" ? (
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          className="prose prose-sm max-w-none prose-p:my-0 prose-ul:my-1 prose-ol:my-1 prose-li:my-0 prose-strong:font-semibold text-gray-800"
+                        >
+                          {m.text}
+                        </ReactMarkdown>
+                      ) : (
+                        <span>{m.text}</span>
+                      )}
+                      <div className="text-xs text-gray-500 mt-1 text-right">
+                        {new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
               <div ref={listEndRef} />
