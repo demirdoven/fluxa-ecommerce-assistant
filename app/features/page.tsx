@@ -191,7 +191,7 @@ export default function Features() {
               Powerful Features Revolution
             </Badge>
             
-            <h1 className="text-6xl lg:text-8xl font-black mb-8 leading-tight">
+            <h1 className="text-6xl lg:text-7xl font-black mb-8 leading-tight">
               <span className="bg-gradient-to-r from-gray-900 via-blue-800 to-indigo-900 bg-clip-text text-transparent">
                 Everything you need to
               </span>
