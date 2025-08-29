@@ -1,5 +1,6 @@
 "use client";
 
+import { Prefooter3 } from "@/components/layout/Prefooter3";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -270,26 +271,7 @@ export default function Platforms() {
           <div className="absolute top-20 left-20 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute bottom-20 right-20 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
         </div>
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-5xl lg:text-6xl font-black mb-8 leading-tight">
-            Ready to get
-            <span className="block text-yellow-300">started?</span>
-          </h2>
-          <p className="text-2xl opacity-90 mb-12 max-w-4xl mx-auto leading-relaxed">
-            Choose your platform and start transforming your customer experience today. 
-            14-day free trial, no credit card required.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
-            <Button size="lg" variant="secondary" className="bg-white text-gray-900 hover:bg-gray-100 px-12 py-6 text-xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 rounded-2xl font-bold">
-              <Download className="w-6 h-6 mr-3" />
-              Start Free Trial
-            </Button>
-            <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-12 py-6 text-xl transition-all duration-300 hover:scale-105 rounded-2xl font-bold">
-              Schedule Demo
-            </Button>
-          </div>
-        </div>
+        <Prefooter3 />
       </section>
 
       {/* Footer */}

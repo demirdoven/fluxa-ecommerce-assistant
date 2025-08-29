@@ -1,5 +1,6 @@
 "use client";
 
+import { Prefooter } from "@/components/layout/Prefooter";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -136,7 +137,7 @@ export default function Home() {
               {stats.map((stat, index) => (
                 <div key={index} className="group">
                   <Card className="border-0 bg-white/60 backdrop-blur-xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-110 hover:bg-white/80">
-                    <CardContent className="p-8 text-center">
+                    <CardContent className="py-8 px-4 text-center">
                       <div className="flex justify-center mb-4">
                         <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full text-white group-hover:scale-110 transition-transform duration-300">
                           {stat.icon}
@@ -342,34 +343,7 @@ export default function Home() {
           <div className="absolute top-20 left-20 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute bottom-20 right-20 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
         </div>
-        
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <h2 className="text-5xl lg:text-6xl font-black mb-8 leading-tight">
-            Ready to transform
-            <span className="block text-yellow-300">
-              your business?
-            </span>
-          </h2>
-          <p className="text-2xl opacity-90 mb-12 max-w-4xl mx-auto leading-relaxed">
-            Join thousands of successful businesses using Fluxa eCommerce Assistant to provide exceptional customer experiences, 
-            increase sales, and reduce support costs.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-8 justify-center items-center mb-8">
-            <Button size="lg" variant="secondary" className="bg-white text-gray-900 hover:bg-gray-100 px-12 py-6 text-xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 rounded-2xl font-bold">
-              <Download className="w-6 h-6 mr-3" />
-              Start Free Trial
-              <Sparkles className="w-5 h-5 ml-2" />
-            </Button>
-            <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-12 py-6 text-xl transition-all duration-300 hover:scale-105 rounded-2xl font-bold">
-              Schedule Demo
-            </Button>
-          </div>
-          
-          <p className="text-lg opacity-75">
-            No credit card required • 14-day free trial • Cancel anytime
-          </p>
-        </div>
+        <Prefooter />
       </section>
 
       {/* Footer */}
