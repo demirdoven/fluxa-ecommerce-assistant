@@ -158,40 +158,7 @@ export default function Roadmap() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation */}
-      <nav className="border-b bg-white/95 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="relative">
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <MessageCircle className="w-6 h-6 text-white" />
-                </div>
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full animate-pulse"></div>
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-indigo-900 bg-clip-text text-transparent">
-                Fluxa eCommerce Assistant
-              </span>
-            </Link>
-            
-            <div className="hidden md:flex items-center gap-8">
-              <Link href="/features" className="text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium hover:scale-105">Features</Link>
-              <Link href="/platforms" className="text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium hover:scale-105">Platforms</Link>
-              <Link href="/roadmap" className="text-blue-600 font-bold hover:scale-105 transition-all duration-300">Roadmap</Link>
-              <Link href="/pricing" className="text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium hover:scale-105">Pricing</Link>
-            </div>
-            
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" className="hover:bg-blue-50 hover:text-blue-600 transition-all duration-300">Sign In</Button>
-              <Button className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                <Download className="w-4 h-4 mr-2" />
-                Free Trial
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
+      
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-20 lg:py-32 relative overflow-hidden">
         <div className="absolute inset-0">

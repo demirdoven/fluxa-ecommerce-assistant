@@ -3,7 +3,8 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import dynamic from 'next/dynamic';
-import { GoogleAnalytics } from '@next/third-parties/google'
+import { GoogleAnalytics } from '@next/third-parties/google';
+import Header from "@/components/layout/Header";
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -25,10 +26,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} relative`} suppressHydrationWarning={true}>
+      <body className={`${inter.className} min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100`} suppressHydrationWarning={true}>
+        <Header />
+        <main>
           {children}
-          <Chatbox />
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID as string} />
+        </main>
+        <Chatbox />
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID as string} />
       </body>
     </html>
   );

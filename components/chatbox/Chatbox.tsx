@@ -37,6 +37,19 @@ export default function ChatboxClient() {
     else requestAnimationFrame(doScroll);
   }
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && (isExpanded || isFullSize)) {
+        setIsMinimized(true);
+        setIsExpanded(false);
+        setIsFullSize(false);
+      }
+    };
+  
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isExpanded, isFullSize]);
+
   // Load existing history on mount
   useEffect(() => {
     let aborted = false;
@@ -456,7 +469,7 @@ export default function ChatboxClient() {
                         <span className="inline-block w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0ms]"></span>
                         <span className="inline-block w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:150ms]"></span>
                         <span className="inline-block w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:300ms]"></span>
-                        <span className="ml-2 text-xs text-gray-500 select-none">Typing</span>
+                        {/* <span className="ml-2 text-xs text-gray-500 select-none">Typing</span> */}
                       </div>
                     </div>
                   ) : (

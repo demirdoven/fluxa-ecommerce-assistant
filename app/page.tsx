@@ -3,8 +3,9 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MessageCircle, Download, Users, Database, Upload, Badge as Widget, ShoppingCart, Globe, Zap, Shield, Star, ArrowRight, Play, CheckCircle, TrendingUp, Clock, Headphones, Sparkles, Bot, Rocket } from "lucide-react";
+import { MessageCircle, Download, Users, Database, Upload, Badge as Widget, ShoppingCart, Globe, Zap, Shield, Star, ArrowRight, Play, CheckCircle, TrendingUp, Clock, Headphones, Sparkles, Bot, Rocket, Menu, X } from "lucide-react";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   const stats = [
@@ -87,44 +88,11 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-      {/* Navigation */}
-      <nav className="border-b border-white/20 bg-white/80 backdrop-blur-xl sticky top-0 z-50 shadow-lg shadow-blue-500/5">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <MessageCircle className="w-6 h-6 text-white" />
-                </div>
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full animate-pulse"></div>
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-indigo-900 bg-clip-text text-transparent">
-                Fluxa eCommerce Assistant
-              </span>
-            </div>
-            
-            <div className="hidden md:flex items-center gap-8">
-              <Link href="/features" className="text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium hover:scale-105">Features</Link>
-              <Link href="/platforms" className="text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium hover:scale-105">Platforms</Link>
-              <Link href="/roadmap" className="text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium hover:scale-105">Roadmap</Link>
-              <Link href="/pricing" className="text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium hover:scale-105">Pricing</Link>
-            </div>
-            
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" className="hover:bg-blue-50 hover:text-blue-600 transition-all duration-300">Sign In</Button>
-              <Button className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                <Download className="w-4 h-4 mr-2" />
-                Free Trial
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
+    <div className="space-y-0">
 
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-indigo-600/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-indigo-600/10" />
         <div className="absolute inset-0">
           <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-r from-purple-400/20 to-indigo-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
@@ -189,7 +157,7 @@ export default function Home() {
 
       {/* Benefits Section */}
       <section className="py-20 lg:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-white via-blue-50 to-purple-50"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-white via-blue-50 to-purple-50" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-20">
             <Badge variant="outline" className="mb-6 px-6 py-2 text-lg border-blue-200 text-blue-700">
@@ -300,17 +268,17 @@ export default function Home() {
                     
                     <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl p-6 ml-8 transform hover:scale-105 transition-transform duration-300 shadow-lg">
                       <div className="text-sm text-blue-100 mb-2 font-medium">Fluxa AI</div>
-                      <div>I'd be happy to help you check your order status! Could you please provide your order number?</div>
+                      <div>I&apos;d be happy to help you check your order status! Could you please provide your order number?</div>
                     </div>
                     
                     <div className="bg-gradient-to-r from-gray-100 to-blue-50 rounded-2xl p-6 transform hover:scale-105 transition-transform duration-300">
                       <div className="text-sm text-gray-600 mb-2 font-medium">Customer</div>
-                      <div className="text-gray-900 font-medium">It's #12345</div>
+                      <div className="text-gray-900 font-medium">It&apos;s #12345</div>
                     </div>
                     
                     <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl p-6 ml-8 transform hover:scale-105 transition-transform duration-300 shadow-lg">
                       <div className="text-sm text-blue-100 mb-2 font-medium">Fluxa AI</div>
-                      <div>Great! Your order #12345 was shipped yesterday and should arrive by tomorrow. Here's your tracking link: track.example.com/12345</div>
+                      <div>Great! Your order #12345 was shipped yesterday and should arrive by tomorrow. Here&apos;s your tracking link: track.example.com/12345</div>
                     </div>
                   </div>
                 </CardContent>
@@ -349,7 +317,7 @@ export default function Home() {
                       <Star key={i} className="w-6 h-6 fill-yellow-400 text-yellow-400 group-hover:scale-110 transition-transform duration-300" style={{transitionDelay: `${i * 100}ms`}} />
                     ))}
                   </div>
-                  <p className="text-gray-700 mb-8 leading-relaxed text-lg font-medium">"{testimonial.content}"</p>
+                  <p className="text-gray-700 mb-8 leading-relaxed text-lg font-medium">&ldquo;{testimonial.content}&rdquo;</p>
                   <div className="flex items-center gap-4">
                     <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg group-hover:scale-110 transition-transform duration-300">
                       {testimonial.avatar}
