@@ -10,6 +10,7 @@ type ActionState = { reply: string | null; ts: number };
 
 export default function ChatboxClient() {
   const TEST_USER_ID = process.env.NEXT_PUBLIC_SENSAY_TEST_USER_ID as string | undefined;
+  const [showQuestionPrompt, setShowQuestionPrompt] = useState(true);
   const [messages, setMessages] = useState<Msg[]>([
     { id: 1, text: "Hello! How can I help you today?", sender: "bot" },
   ]);
@@ -323,36 +324,191 @@ export default function ChatboxClient() {
     }
   }
 
-  // Minimized icon
+  // Question prompt and minimized icon
   if (isMinimized) {
     return (
-      <div
-        className="chatbox-minimized-icon fixed bottom-6 right-6 w-16 h-16 bg-indigo-600 rounded-full shadow-lg flex items-center justify-center cursor-pointer z-[9999] transform transition-transform duration-200 ease-out hover:scale-110 active:scale-95"
-        onClick={handleRestore}
-        title="Open chat"
-        aria-label="Open chat"
-        role="button"
-      >
-        {unread > 0 && (
-          <span className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-red-600 text-white text-[11px] leading-5 text-center font-semibold shadow-md select-none">
-            {unread > 99 ? "99+" : unread}
-          </span>
+      <div className="fixed bottom-6 right-6 flex flex-col items-end space-y-3 z-[9999]">
+        {showQuestionPrompt && (
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden w-64">
+            <div className="flex justify-between items-center p-3 border-b border-gray-100">
+              <h3 className="text-sm font-medium text-gray-900">Chat with our support</h3>
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowQuestionPrompt(false);
+                }}
+                className="text-gray-400 hover:text-gray-500"
+                aria-label="Close prompt"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </button>
+            </div>
+            <div className="p-3 space-y-2">
+              <button
+                onClick={async (e) => {
+                  e.stopPropagation();
+                  const question = "How do I install the chat on my WordPress site?";
+                  setInputValue(""); // Clear input immediately
+                  handleRestore();
+                  
+                  // Add user message
+                  const userMsg = {
+                    id: ++idRef.current,
+                    text: question,
+                    sender: "user" as const,
+                  };
+                  
+                  // Add bot typing indicator
+                  const botId = ++idRef.current;
+                  pendingBotIdRef.current = botId;
+                  setMessages(prev => [...prev, userMsg, { id: botId, text: "…", sender: "bot" }]);
+                  
+                  // Send to API
+                  setPending(true);
+                  try {
+                    const resp = await fetch("/api/sensay/complete", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        text: question,
+                        ...(TEST_USER_ID ? { userId: TEST_USER_ID } : {}),
+                      }),
+                    });
+                    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                    const replyText = await resp.text();
+                    setMessages(prev => prev.map((m) => (m.id === botId ? { ...m, text: replyText || "(no reply)" } : m)));
+                  } catch (err: any) {
+                    setMessages(prev => prev.map((m) => (m.id === botId ? { ...m, text: `Error: ${err?.message || "failed"}` } : m)));
+                  } finally {
+                    pendingBotIdRef.current = null;
+                    setPending(false);
+                  }
+                }}
+                className="w-full text-left text-sm p-2 rounded-lg hover:bg-gray-50 text-gray-700 hover:text-indigo-600 transition-colors"
+              >
+                How do I install the chat on my WordPress site?
+              </button>
+              <button
+                onClick={async (e) => {
+                  e.stopPropagation();
+                  const question = "What e-commerce platforms do you support?";
+                  setInputValue(""); // Clear input immediately
+                  handleRestore();
+                  
+                  // Add user message
+                  const userMsg = {
+                    id: ++idRef.current,
+                    text: question,
+                    sender: "user" as const,
+                  };
+                  
+                  // Add bot typing indicator
+                  const botId = ++idRef.current;
+                  pendingBotIdRef.current = botId;
+                  setMessages(prev => [...prev, userMsg, { id: botId, text: "…", sender: "bot" }]);
+                  
+                  // Send to API
+                  setPending(true);
+                  try {
+                    const resp = await fetch("/api/sensay/complete", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        text: question,
+                        ...(TEST_USER_ID ? { userId: TEST_USER_ID } : {}),
+                      }),
+                    });
+                    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                    const replyText = await resp.text();
+                    setMessages(prev => prev.map((m) => (m.id === botId ? { ...m, text: replyText || "(no reply)" } : m)));
+                  } catch (err: any) {
+                    setMessages(prev => prev.map((m) => (m.id === botId ? { ...m, text: `Error: ${err?.message || "failed"}` } : m)));
+                  } finally {
+                    pendingBotIdRef.current = null;
+                    setPending(false);
+                  }
+                }}
+                className="w-full text-left text-sm p-2 rounded-lg hover:bg-gray-50 text-gray-700 hover:text-indigo-600 transition-colors"
+              >
+                What e-commerce platforms do you support?
+              </button>
+              <button
+                onClick={async (e) => {
+                  e.stopPropagation();
+                  const question = "Can I customize the chat widget's appearance?";
+                  setInputValue(""); // Clear input immediately
+                  handleRestore();
+                  
+                  // Add user message
+                  const userMsg = {
+                    id: ++idRef.current,
+                    text: question,
+                    sender: "user" as const,
+                  };
+                  
+                  // Add bot typing indicator
+                  const botId = ++idRef.current;
+                  pendingBotIdRef.current = botId;
+                  setMessages(prev => [...prev, userMsg, { id: botId, text: "…", sender: "bot" }]);
+                  
+                  // Send to API
+                  setPending(true);
+                  try {
+                    const resp = await fetch("/api/sensay/complete", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        text: question,
+                        ...(TEST_USER_ID ? { userId: TEST_USER_ID } : {}),
+                      }),
+                    });
+                    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                    const replyText = await resp.text();
+                    setMessages(prev => prev.map((m) => (m.id === botId ? { ...m, text: replyText || "(no reply)" } : m)));
+                  } catch (err: any) {
+                    setMessages(prev => prev.map((m) => (m.id === botId ? { ...m, text: `Error: ${err?.message || "failed"}` } : m)));
+                  } finally {
+                    pendingBotIdRef.current = null;
+                    setPending(false);
+                  }
+                }}
+                className="w-full text-left text-sm p-2 rounded-lg hover:bg-gray-50 text-gray-700 hover:text-indigo-600 transition-colors"
+              >
+                Can I customize the chat widget&apos;s appearance?
+              </button>
+            </div>
+          </div>
         )}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-8 w-8 text-white"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          aria-hidden="true"
+        <div
+          className="relative w-16 h-16 cursor-pointer transform transition-transform duration-200 ease-out hover:scale-110 active:scale-95 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-full flex items-center justify-center shadow-lg border-2 border-white"
+          onClick={handleRestore}
+          title="Open chat"
+          aria-label="Open chat"
+          role="button"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-          />
-        </svg>
+          {unread > 0 && (
+            <span className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-red-600 text-white text-[11px] leading-5 text-center font-semibold shadow-md select-none">
+              {unread > 99 ? "99+" : unread}
+            </span>
+          )}
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="24" 
+            height="24" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            className="w-8 h-8 text-white"
+          >
+            <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path>
+          </svg>
+          <div className="absolute top-0 right-0 w-4 h-4 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full animate-pulse"></div>
+        </div>
       </div>
     );
   }
@@ -461,15 +617,14 @@ export default function ChatboxClient() {
                   {m.sender === "bot" && m.text === "…" ? (
                     // Typing indicator bubble
                     <div
-                      className="max-w-[80%] p-3 rounded-lg bg-gray-100 text-gray-800 rounded-bl-none"
+                      className="max-w-[80%] text-gray-800 "
                       aria-live="polite"
                       aria-label="Assistant is typing"
                     >
-                      <div className="flex items-center gap-1">
-                        <span className="inline-block w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0ms]"></span>
-                        <span className="inline-block w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:150ms]"></span>
-                        <span className="inline-block w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:300ms]"></span>
-                        {/* <span className="ml-2 text-xs text-gray-500 select-none">Typing</span> */}
+                      <div className="flex items-center space-x-1">
+                        <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></span>
+                        <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+                        <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:0.4s]"></span>
                       </div>
                     </div>
                   ) : (
