@@ -11,6 +11,9 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'Fluxa eCommerce Assistant - AI-Powered eCommerce Solution',
   description: 'Boost sales and reduce support costs with Fluxa eCommerce Assistant. The most advanced AI eCommerce plugin for WordPress and e-commerce platforms.',
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
 // Dynamically import Chatbox with SSR disabled
