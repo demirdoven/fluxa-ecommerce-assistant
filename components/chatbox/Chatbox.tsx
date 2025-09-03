@@ -10,7 +10,6 @@ type ActionState = { reply: string | null; ts: number };
 
 export default function ChatboxClient() {
   const TEST_USER_ID = process.env.NEXT_PUBLIC_SENSAY_TEST_USER_ID as string | undefined;
-  const [showQuestionPrompt, setShowQuestionPrompt] = useState(true);
   const [messages, setMessages] = useState<Msg[]>([
     { id: 1, text: "Hello! How can I help you today?", sender: "bot" },
   ]);
@@ -21,12 +20,32 @@ export default function ChatboxClient() {
   const [isFullSize, setIsFullSize] = useState(false);
   const [unread, setUnread] = useState(0);
   const [historyLoaded, setHistoryLoaded] = useState(false);
+  const [showQuestions, setShowQuestions] = useState(true);
+
   const chatboxRef = useRef<HTMLDivElement>(null);
   const listEndRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const idRef = useRef<number>(1); // last used id
   const pendingBotIdRef = useRef<number | null>(null);
+
+  // Check session storage on component mount
+  useEffect(() => {
+    const questionsClosed = sessionStorage.getItem('questionsClosed');
+    if (questionsClosed === 'true') {
+      setShowQuestions(false);
+    } else {
+      setShowQuestions(true);
+    }
+  }, []);
+
+  const handleCloseQuestions = () => {
+    setShowQuestions(false);
+    sessionStorage.setItem('questionsClosed', 'true');
+  };
+  const handleHideQuestions = () => {
+    setShowQuestions(false);
+  };
 
   function scrollToBottom(immediate = false) {
     const el = scrollRef.current;
@@ -328,16 +347,17 @@ export default function ChatboxClient() {
   if (isMinimized) {
     return (
       <div className="fixed bottom-6 right-6 flex flex-col items-end space-y-3 z-[9999]">
-        {showQuestionPrompt && (
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden w-64">
-            <div className="flex justify-between items-center p-3 border-b border-gray-100">
-              <h3 className="text-sm font-medium text-gray-900">Chat with our support</h3>
-              <button 
+       
+        {showQuestions && (
+          <div className="absolute bottom-20 right-4 w-64 bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
+            <div className="bg-indigo-600 px-3 py-2 flex justify-between items-center">
+              <h3 className="text-white text-sm font-medium">Chat with our support</h3>
+              <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  setShowQuestionPrompt(false);
+                  handleCloseQuestions();
                 }}
-                className="text-gray-400 hover:text-gray-500"
+                className="text-white hover:text-gray-200"
                 aria-label="Close prompt"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -350,22 +370,19 @@ export default function ChatboxClient() {
                 onClick={async (e) => {
                   e.stopPropagation();
                   const question = "How do I install the chat on my WordPress site?";
-                  setInputValue(""); // Clear input immediately
+                  setInputValue("");
                   handleRestore();
                   
-                  // Add user message
                   const userMsg = {
                     id: ++idRef.current,
                     text: question,
                     sender: "user" as const,
                   };
                   
-                  // Add bot typing indicator
                   const botId = ++idRef.current;
                   pendingBotIdRef.current = botId;
                   setMessages(prev => [...prev, userMsg, { id: botId, text: "…", sender: "bot" }]);
                   
-                  // Send to API
                   setPending(true);
                   try {
                     const resp = await fetch("/api/sensay/complete", {
@@ -384,6 +401,7 @@ export default function ChatboxClient() {
                   } finally {
                     pendingBotIdRef.current = null;
                     setPending(false);
+                    handleHideQuestions();
                   }
                 }}
                 className="w-full text-left text-sm p-2 rounded-lg hover:bg-gray-50 text-gray-700 hover:text-indigo-600 transition-colors"
@@ -394,22 +412,19 @@ export default function ChatboxClient() {
                 onClick={async (e) => {
                   e.stopPropagation();
                   const question = "What e-commerce platforms do you support?";
-                  setInputValue(""); // Clear input immediately
+                  setInputValue("");
                   handleRestore();
                   
-                  // Add user message
                   const userMsg = {
                     id: ++idRef.current,
                     text: question,
                     sender: "user" as const,
                   };
                   
-                  // Add bot typing indicator
                   const botId = ++idRef.current;
                   pendingBotIdRef.current = botId;
                   setMessages(prev => [...prev, userMsg, { id: botId, text: "…", sender: "bot" }]);
                   
-                  // Send to API
                   setPending(true);
                   try {
                     const resp = await fetch("/api/sensay/complete", {
@@ -428,6 +443,7 @@ export default function ChatboxClient() {
                   } finally {
                     pendingBotIdRef.current = null;
                     setPending(false);
+                    handleHideQuestions();
                   }
                 }}
                 className="w-full text-left text-sm p-2 rounded-lg hover:bg-gray-50 text-gray-700 hover:text-indigo-600 transition-colors"
@@ -438,22 +454,19 @@ export default function ChatboxClient() {
                 onClick={async (e) => {
                   e.stopPropagation();
                   const question = "Can I customize the chat widget's appearance?";
-                  setInputValue(""); // Clear input immediately
+                  setInputValue("");
                   handleRestore();
                   
-                  // Add user message
                   const userMsg = {
                     id: ++idRef.current,
                     text: question,
                     sender: "user" as const,
                   };
                   
-                  // Add bot typing indicator
                   const botId = ++idRef.current;
                   pendingBotIdRef.current = botId;
                   setMessages(prev => [...prev, userMsg, { id: botId, text: "…", sender: "bot" }]);
                   
-                  // Send to API
                   setPending(true);
                   try {
                     const resp = await fetch("/api/sensay/complete", {
@@ -472,6 +485,7 @@ export default function ChatboxClient() {
                   } finally {
                     pendingBotIdRef.current = null;
                     setPending(false);
+                    handleHideQuestions();
                   }
                 }}
                 className="w-full text-left text-sm p-2 rounded-lg hover:bg-gray-50 text-gray-700 hover:text-indigo-600 transition-colors"
@@ -489,7 +503,7 @@ export default function ChatboxClient() {
           role="button"
         >
           {unread > 0 && (
-            <span className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-red-600 text-white text-[11px] leading-5 text-center font-semibold shadow-md select-none">
+            <span className="absolute top-0 right-0 w-4 h-4 rounded-full bg-red-600 text-white text-[10px] leading-4 text-center  shadow-md select-none">
               {unread > 99 ? "99+" : unread}
             </span>
           )}
@@ -507,7 +521,7 @@ export default function ChatboxClient() {
           >
             <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path>
           </svg>
-          <div className="absolute top-0 right-0 w-4 h-4 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full animate-pulse"></div>
+          <div className="absolute top-0 left-0 w-4 h-4 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full animate-pulse"></div>
         </div>
       </div>
     );
@@ -672,16 +686,13 @@ export default function ChatboxClient() {
                 <button
                   type="submit"
                   disabled={pending || inputValue.trim() === ""}
-                  className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-60"
                   aria-busy={pending}
                   aria-label="Send message"
+                  className={`bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-60 ${pending ? 'opacity-75' : ''}`}
                 >
-                  {pending ? "..." : "Send"}
+                  Send
                 </button>
               </form>
-              <p className="text-xs text-gray-500 mt-2 text-center">
-                Powered by Fluxa AI Assistant
-              </p>
             </div>
           </>
         ) : (
