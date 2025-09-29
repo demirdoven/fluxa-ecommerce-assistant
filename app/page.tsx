@@ -108,11 +108,11 @@ export default function Home() {
             
             <h1 className="text-6xl lg:text-8xl font-black mb-8 leading-tight">
               <span className="bg-gradient-to-r from-gray-900 via-blue-800 to-indigo-900 bg-clip-text text-transparent">
-                Transform Your
+                AI Assistant for WooCommerce
               </span>
               <br />
               <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent animate-pulse">
-                Customer Experience
+                that converts visitors into customers
               </span>
             </h1>
             
@@ -121,15 +121,18 @@ export default function Home() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
-              <Button size="lg" className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 text-white px-12 py-6 text-xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 rounded-2xl">
-                <Download className="w-6 h-6 mr-3" />
-                Start Free Trial
-                <Sparkles className="w-5 h-5 ml-2" />
-              </Button>
-              <Button variant="outline" size="lg" className="px-12 py-6 text-xl border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-all duration-300 hover:scale-105 rounded-2xl">
-                <Play className="w-6 h-6 mr-3" />
-                Watch Demo
-              </Button>
+              <Link href="/platforms">
+                <Button size="lg" className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 text-white px-12 py-6 text-xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 rounded-2xl">
+                  <Download className="w-6 h-6 mr-3" />
+                  Install for WordPress/WooCommerce
+                </Button>
+              </Link>
+              <Link href="/roadmap">
+                <Button variant="outline" size="lg" className="px-12 py-6 text-xl border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-all duration-300 hover:scale-105 rounded-2xl">
+                  <Play className="w-6 h-6 mr-3" />
+                  Join Shopify/Magento/BigCommerce waitlist
+                </Button>
+              </Link>
             </div>
             
             {/* Animated Stats */}
@@ -156,23 +159,23 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Benefits Section */}
+      {/* At-a-glance value bullets */}
       <section className="py-20 lg:py-32 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-white via-blue-50 to-purple-50" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-20">
             <Badge variant="outline" className="mb-6 px-6 py-2 text-lg border-blue-200 text-blue-700">
               <Rocket className="w-5 h-5 mr-2" />
-              Why Choose Fluxa?
+              Why stores choose Fluxa
             </Badge>
             <h2 className="text-5xl lg:text-6xl font-black text-gray-900 mb-8">
-              Supercharge Your
+              From chat to insights
               <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Business Growth
+                conversations, events, feedback — in one plugin
               </span>
             </h2>
             <p className="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              Join thousands of successful businesses that have transformed their customer support with our AI-powered solution.
+              WooCommerce first. Shopify, Magento, BigCommerce next. Built on Sensay Replica for store‑aware answers.
             </p>
           </div>
           
@@ -198,7 +201,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Preview */}
+      {/* Differentiators Preview */}
       <section className="py-20 lg:py-32 bg-gradient-to-r from-gray-900 via-blue-900 to-indigo-900 text-white relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-blue-600/20 to-purple-600/20"></div>
@@ -211,17 +214,16 @@ export default function Home() {
             <div>
               <Badge variant="outline" className="mb-8 border-blue-300 text-blue-200 px-6 py-2 text-lg">
                 <Zap className="w-5 h-5 mr-2" />
-                Powerful Features
+                What makes Fluxa different
               </Badge>
               <h2 className="text-5xl lg:text-6xl font-black mb-8 leading-tight">
-                Everything you need to
+                End‑to‑end data model
                 <span className="block bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  dominate your market
+                  not just a chat bubble
                 </span>
               </h2>
               <p className="text-xl text-gray-300 mb-10 leading-relaxed">
-                From seamless platform integration to advanced AI training, our comprehensive feature set 
-                ensures your chatbot delivers exceptional customer experiences that convert.
+                Conversations, messages, events, and feedback are persisted in first‑party tables. Admin tools include chat history with pagination/sorting, single‑conversation drill‑down, and a quickstart wizard.
               </p>
               
               <div className="space-y-6 mb-10">
@@ -232,9 +234,9 @@ export default function Home() {
                     </div>
                     <div>
                       <h4 className="text-xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors duration-300">
-                        {feature.title}
+                        UX that drives re‑engagement
                       </h4>
-                      <p className="text-gray-300">{feature.description}</p>
+                      <p className="text-gray-300">Unread badges and title counter to bring visitors back mid‑session.</p>
                     </div>
                   </div>
                 ))}
@@ -264,14 +266,13 @@ export default function Home() {
                   <div className="space-y-6">
                     <div className="bg-gradient-to-r from-gray-100 to-blue-50 rounded-2xl p-6 transform hover:scale-105 transition-transform duration-300">
                       <div className="text-sm text-gray-600 mb-2 font-medium">Customer</div>
-                      <div className="text-gray-900 font-medium">Hi, I need help with my order status</div>
+                      <div className="text-gray-900 font-medium">Hi, I need help with my WooCommerce order status</div>
                     </div>
                     
                     <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl p-6 ml-8 transform hover:scale-105 transition-transform duration-300 shadow-lg">
                       <div className="text-sm text-blue-100 mb-2 font-medium">Fluxa AI</div>
-                      <div>I&apos;d be happy to help you check your order status! Could you please provide your order number?</div>
+                      <div>I can help. What&apos;s your WooCommerce order number? I&apos;ll also log this conversation for analytics.</div>
                     </div>
-                    
                     <div className="bg-gradient-to-r from-gray-100 to-blue-50 rounded-2xl p-6 transform hover:scale-105 transition-transform duration-300">
                       <div className="text-sm text-gray-600 mb-2 font-medium">Customer</div>
                       <div className="text-gray-900 font-medium">It&apos;s #12345</div>
