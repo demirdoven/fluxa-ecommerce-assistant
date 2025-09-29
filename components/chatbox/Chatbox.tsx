@@ -23,6 +23,14 @@ export default function ChatboxClient() {
   const [historyLoaded, setHistoryLoaded] = useState(false);
   const [showQuestions, setShowQuestions] = useState(true);
   const isUserReady = Boolean(userId);
+  const getCurrentUserId = () => {
+    if (userId) return userId;
+    if (typeof window !== 'undefined') {
+      const v = localStorage.getItem('flx_uuid');
+      return v && v.trim() ? v : null;
+    }
+    return null;
+  };
 
   const chatboxRef = useRef<HTMLDivElement>(null);
   const listEndRef = useRef<HTMLDivElement>(null);
@@ -98,10 +106,11 @@ export default function ChatboxClient() {
     let aborted = false;
     async function loadHistory() {
       try {
-        if (!userId) return;
+        const uid = getCurrentUserId();
+        if (!uid) return;
         const qs = new URLSearchParams();
         qs.set("limit", "30");
-        qs.set("userId", userId);
+        qs.set("userId", uid);
         const resp = await fetch(`/api/sensay/history?${qs.toString()}`);
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const data = await resp.json();
@@ -136,8 +145,8 @@ export default function ChatboxClient() {
           setHistoryLoaded(true);
           // unread from localStorage baseline using signature when available
           try {
-            const LAST_SEEN_KEY = `sensay:lastSeen:${userId}`;
-            const LAST_SEEN_SIG_KEY = `sensay:lastSeenSig:${userId}`;
+            const LAST_SEEN_KEY = `sensay:lastSeen:${uid}`;
+            const LAST_SEEN_SIG_KEY = `sensay:lastSeenSig:${uid}`;
             const lastSeen = Number(localStorage.getItem(LAST_SEEN_KEY) || 0);
             const lastSeenSig = localStorage.getItem(LAST_SEEN_SIG_KEY);
             const hasBaseline = !!lastSeenSig || lastSeen > 0;
@@ -340,7 +349,8 @@ export default function ChatboxClient() {
     if (pending) return;
     const textToSend = inputValue.trim();
     if (!textToSend) return;
-    if (!isUserReady) return; // wait for userId
+    const uid = getCurrentUserId();
+    if (!uid) return; // wait for userId
 
     // Optimistic UI update
     const ok = handleSubmitPrep();
@@ -354,7 +364,7 @@ export default function ChatboxClient() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           text: textToSend,
-          userId,
+          userId: uid,
         }),
       });
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
@@ -394,7 +404,8 @@ export default function ChatboxClient() {
               <button
                 onClick={async (e) => {
                   e.stopPropagation();
-                  if (!isUserReady) return;
+                  const uid = getCurrentUserId();
+                  if (!uid) return;
                   const question = "How do I install the chat on my WordPress site?";
                   setInputValue("");
                   handleRestore();
@@ -416,7 +427,7 @@ export default function ChatboxClient() {
                       headers: { "Content-Type": "application/json" },
                       body: JSON.stringify({
                         text: question,
-                        userId,
+                        userId: uid,
                       }),
                     });
                     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
@@ -437,7 +448,8 @@ export default function ChatboxClient() {
               <button
                 onClick={async (e) => {
                   e.stopPropagation();
-                  if (!isUserReady) return;
+                  const uid = getCurrentUserId();
+                  if (!uid) return;
                   const question = "What e-commerce platforms do you support?";
                   setInputValue("");
                   handleRestore();
@@ -480,7 +492,8 @@ export default function ChatboxClient() {
               <button
                 onClick={async (e) => {
                   e.stopPropagation();
-                  if (!isUserReady) return;
+                  const uid = getCurrentUserId();
+                  if (!uid) return;
                   const question = "Can I customize the chat widget's appearance?";
                   setInputValue("");
                   handleRestore();
