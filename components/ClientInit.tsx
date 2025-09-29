@@ -74,7 +74,7 @@ export default function ClientInit() {
         localStorage.setItem(LS_KEY, id);
         localStorage.removeItem(LOCK_KEY);
         // eslint-disable-next-line no-console
-        console.log("CREATING NEW USER:", { email, id });
+        // console.log("CREATING NEW USER:", { email, id });
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error("ClientInit error:", e);
