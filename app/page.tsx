@@ -106,9 +106,9 @@ export default function Home() {
               AI-Powered eCommerce Revolution
             </Badge>
             
-            <h1 className="text-6xl lg:text-8xl font-black mb-8 leading-tight">
+            <h1 className="text-6xl lg:text-7xl font-black mb-8 leading-tight">
               <span className="bg-gradient-to-r from-gray-900 via-blue-800 to-indigo-900 bg-clip-text text-transparent">
-                AI Assistant for WooCommerce
+                AI Assistant for online shops
               </span>
               <br />
               <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent animate-pulse">
