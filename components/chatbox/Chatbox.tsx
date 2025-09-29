@@ -10,6 +10,7 @@ type ActionState = { reply: string | null; ts: number };
 
 export default function ChatboxClient() {
   const TEST_USER_ID = process.env.NEXT_PUBLIC_SENSAY_TEST_USER_ID as string | undefined;
+  const [userId, setUserId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Msg[]>([
     { id: 1, text: "Hello! How can I help you today?", sender: "bot" },
   ]);
@@ -21,6 +22,7 @@ export default function ChatboxClient() {
   const [unread, setUnread] = useState(0);
   const [historyLoaded, setHistoryLoaded] = useState(false);
   const [showQuestions, setShowQuestions] = useState(true);
+  const isUserReady = Boolean(userId);
 
   const chatboxRef = useRef<HTMLDivElement>(null);
   const listEndRef = useRef<HTMLDivElement>(null);
@@ -70,14 +72,36 @@ export default function ChatboxClient() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isExpanded, isFullSize]);
 
-  // Load existing history on mount
+  // Resolve userId from localStorage ('flx_uuid') as soon as possible
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    let cancelled = false;
+    const LS_KEY = 'flx_uuid';
+    const trySet = () => {
+      const v = localStorage.getItem(LS_KEY);
+      if (v && !cancelled) setUserId(v);
+      return Boolean(v);
+    };
+    if (trySet()) return;
+    let attempts = 0;
+    const timer = setInterval(() => {
+      attempts++;
+      if (trySet() || attempts > 40) {
+        clearInterval(timer);
+      }
+    }, 250);
+    return () => { cancelled = true; clearInterval(timer); };
+  }, []);
+
+  // Load existing history once userId is available
   useEffect(() => {
     let aborted = false;
     async function loadHistory() {
       try {
+        if (!userId) return;
         const qs = new URLSearchParams();
         qs.set("limit", "30");
-        if (TEST_USER_ID) qs.set("userId", TEST_USER_ID);
+        qs.set("userId", userId);
         const resp = await fetch(`/api/sensay/history?${qs.toString()}`);
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const data = await resp.json();
@@ -112,8 +136,8 @@ export default function ChatboxClient() {
           setHistoryLoaded(true);
           // unread from localStorage baseline using signature when available
           try {
-            const LAST_SEEN_KEY = `sensay:lastSeen:${TEST_USER_ID || "default"}`;
-            const LAST_SEEN_SIG_KEY = `sensay:lastSeenSig:${TEST_USER_ID || "default"}`;
+            const LAST_SEEN_KEY = `sensay:lastSeen:${userId}`;
+            const LAST_SEEN_SIG_KEY = `sensay:lastSeenSig:${userId}`;
             const lastSeen = Number(localStorage.getItem(LAST_SEEN_KEY) || 0);
             const lastSeenSig = localStorage.getItem(LAST_SEEN_SIG_KEY);
             const hasBaseline = !!lastSeenSig || lastSeen > 0;
@@ -151,13 +175,13 @@ export default function ChatboxClient() {
     return () => {
       aborted = true;
     };
-  }, [TEST_USER_ID]);
+  }, [userId]);
 
   // Maintain lastSeen and unread based on visibility and new messages
   useEffect(() => {
     if (!historyLoaded) return; // avoid flicker before history arrives
-    const LAST_SEEN_KEY = `sensay:lastSeen:${TEST_USER_ID || "default"}`;
-    const LAST_SEEN_SIG_KEY = `sensay:lastSeenSig:${TEST_USER_ID || "default"}`;
+    const LAST_SEEN_KEY = `sensay:lastSeen:${userId || "default"}`;
+    const LAST_SEEN_SIG_KEY = `sensay:lastSeenSig:${userId || "default"}`;
     // Find latest REAL message id (exclude bot placeholder '…')
     const latestRealId = (() => {
       for (let i = messages.length - 1; i >= 0; i--) {
@@ -216,7 +240,7 @@ export default function ChatboxClient() {
         setUnread(count);
       } catch {}
     }
-  }, [messages, isExpanded, isFullSize, isMinimized, TEST_USER_ID, unread, historyLoaded]);
+  }, [messages, isExpanded, isFullSize, isMinimized, userId, unread, historyLoaded]);
 
   // yeni mesaj geldikçe veya pencere açılınca alta kaydır (deferred for layout)
   useEffect(() => {
@@ -268,8 +292,8 @@ export default function ChatboxClient() {
     setIsExpanded(true);
     // Mark all current as seen immediately on open
     try {
-      const LAST_SEEN_KEY = `sensay:lastSeen:${TEST_USER_ID || "default"}`;
-      const LAST_SEEN_SIG_KEY = `sensay:lastSeenSig:${TEST_USER_ID || "default"}`;
+      const LAST_SEEN_KEY = `sensay:lastSeen:${userId || "default"}`;
+      const LAST_SEEN_SIG_KEY = `sensay:lastSeenSig:${userId || "default"}`;
       // Use latest real id (exclude placeholder)
       let latestRealId = 0;
       let latestRealMsg: Msg | undefined = undefined;
@@ -316,6 +340,7 @@ export default function ChatboxClient() {
     if (pending) return;
     const textToSend = inputValue.trim();
     if (!textToSend) return;
+    if (!isUserReady) return; // wait for userId
 
     // Optimistic UI update
     const ok = handleSubmitPrep();
@@ -329,7 +354,7 @@ export default function ChatboxClient() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           text: textToSend,
-          ...(TEST_USER_ID ? { userId: TEST_USER_ID } : {}),
+          userId,
         }),
       });
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
@@ -369,6 +394,7 @@ export default function ChatboxClient() {
               <button
                 onClick={async (e) => {
                   e.stopPropagation();
+                  if (!isUserReady) return;
                   const question = "How do I install the chat on my WordPress site?";
                   setInputValue("");
                   handleRestore();
@@ -390,7 +416,7 @@ export default function ChatboxClient() {
                       headers: { "Content-Type": "application/json" },
                       body: JSON.stringify({
                         text: question,
-                        ...(TEST_USER_ID ? { userId: TEST_USER_ID } : {}),
+                        userId,
                       }),
                     });
                     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
@@ -411,6 +437,7 @@ export default function ChatboxClient() {
               <button
                 onClick={async (e) => {
                   e.stopPropagation();
+                  if (!isUserReady) return;
                   const question = "What e-commerce platforms do you support?";
                   setInputValue("");
                   handleRestore();
@@ -453,6 +480,7 @@ export default function ChatboxClient() {
               <button
                 onClick={async (e) => {
                   e.stopPropagation();
+                  if (!isUserReady) return;
                   const question = "Can I customize the chat widget's appearance?";
                   setInputValue("");
                   handleRestore();

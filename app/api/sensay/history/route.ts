@@ -10,7 +10,6 @@ export async function GET(req: NextRequest) {
     const missing: string[] = [];
     if (!process.env.SENSAY_ORG_SECRET) missing.push("SENSAY_ORG_SECRET");
     if (!process.env.SENSAY_REPLICA_UUID) missing.push("SENSAY_REPLICA_UUID");
-    if (!process.env.SENSAY_MASTER_USER_ID) missing.push("SENSAY_MASTER_USER_ID");
     if (missing.length) {
       return new NextResponse(
         `Missing env vars: ${missing.join(", ")}\nAdd them to .env.local and restart the dev server.`,
@@ -24,6 +23,10 @@ export async function GET(req: NextRequest) {
     const cursor = searchParams.get("cursor") || undefined;
     const start = searchParams.get("start") || undefined;
     const end = searchParams.get("end") || undefined;
+
+    if (!userId) {
+      return new NextResponse("Missing 'userId'", { status: 400 });
+    }
 
     const data = await getReplicaHistory(
       {

@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 import dynamic from 'next/dynamic';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import Header from "@/components/layout/Header";
+import ClientInit from "@/components/ClientInit";
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -30,6 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100`} suppressHydrationWarning={true}>
+        <ClientInit />
         <Header />
         <main>
           {children}
