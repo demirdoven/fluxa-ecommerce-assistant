@@ -4,13 +4,13 @@ import { Prefooter2 } from "@/components/layout/Prefooter2";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MessageCircle, Download, Mic, MessageSquare, BarChart, TrendingUp, Zap, ArrowRight, Calendar, CheckCircle, Clock, Lightbulb } from "lucide-react";
+import { MessageCircle, Eye, Mic, MessageSquare, BarChart, TrendingUp, Zap, ArrowRight, Calendar, CheckCircle, Clock, Lightbulb } from "lucide-react";
 import Link from "next/link";
 
 export default function Roadmap() {
   const roadmapItems = [
     {
-      quarter: "Q1 2025",
+      quarter: "Q4 2025",
       status: "In Progress",
       items: [
         {
@@ -40,7 +40,7 @@ export default function Roadmap() {
       ]
     },
     {
-      quarter: "Q2 2025",
+      quarter: "Q1 2026",
       status: "Planned",
       items: [
         {
@@ -70,7 +70,7 @@ export default function Roadmap() {
       ]
     },
     {
-      quarter: "Q3 2025",
+      quarter: "Q2 2026",
       status: "Planned",
       items: [
         {
@@ -100,7 +100,7 @@ export default function Roadmap() {
       ]
     },
     {
-      quarter: "Q4 2025",
+      quarter: "Q3 2026",
       status: "Research",
       items: [
         {
@@ -189,8 +189,8 @@ export default function Roadmap() {
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <Button size="lg" className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 text-white px-12 py-6 text-xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 rounded-2xl">
-                <Download className="w-6 h-6 mr-3" />
-                Start Free Trial
+                <Eye className="w-6 h-6 mr-3" />
+                See Demo
               </Button>
               <Button variant="outline" size="lg" className="px-12 py-6 text-xl border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-all duration-300 hover:scale-105 rounded-2xl">
                 Request Feature

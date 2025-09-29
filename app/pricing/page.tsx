@@ -169,7 +169,7 @@ export default function Pricing() {
                 )}
                 
                 <CardHeader className="text-center pb-10">
-                  <div className={`w-20 h-20 bg-gradient-to-r ${plan.color} rounded-3xl flex items-center justify-center text-white mx-auto mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg`}>
+                  <div className={`w-20 h-20 bg-gradient-to-r ${plan.color} rounded-3xl flex items-center justify-center text-white mx-auto mt-5 mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg`}>
                     {plan.icon}
                   </div>
                   

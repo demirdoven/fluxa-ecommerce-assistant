@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, MessageCircle, Download } from 'lucide-react';
+import { Menu, X, MessageCircle, Download, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function Header() {
@@ -83,10 +83,12 @@ export default function Header() {
                 </div>
                 
                 <div className="hidden md:flex items-center gap-4">
-                    <Button variant="ghost" className="hover:bg-blue-50 hover:text-blue-600 transition-all duration-300">Sign In</Button>
-                    <Button className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                        <Download className="w-4 h-4 mr-2" />
-                        Free Trial
+                    {/* <Button variant="ghost" className="hover:bg-blue-50 hover:text-blue-600 transition-all duration-300">Sign In</Button> */}
+                    <Button asChild className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                      <a href="https://urbanestore.s6-tastewp.com/" target="_blank" rel="noopener noreferrer">
+                        <Eye className="w-6 h-6 mr-3" />
+                        Try Now
+                      </a>
                     </Button>
                 </div>
 

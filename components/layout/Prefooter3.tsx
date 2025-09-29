@@ -19,9 +19,7 @@ export const Prefooter3 = () => {
               <Download className="w-6 h-6 mr-3" />
               Start Free Trial
             </Button>
-            <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-12 py-6 text-xl transition-all duration-300 hover:scale-105 rounded-2xl font-bold">
-              Schedule Demo
-            </Button>
+      
           </div>
         </div>
   )
