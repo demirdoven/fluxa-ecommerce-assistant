@@ -58,6 +58,12 @@ export default function ClientInit() {
         const id = randomIdLettersOnly();
         const email = randomEmail();
 
+        // Set immediately to close race conditions, then notify listeners
+        try {
+          localStorage.setItem(LS_KEY, id);
+          window.dispatchEvent(new CustomEvent('flx_uuid_ready', { detail: id }));
+        } catch {}
+
         const resp = await fetch("/api/sensay/users", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -70,7 +76,7 @@ export default function ClientInit() {
           localStorage.removeItem(LOCK_KEY);
           return;
         }
-
+        // Ensure persisted (it was already set above, but keep idempotent)
         localStorage.setItem(LS_KEY, id);
         localStorage.removeItem(LOCK_KEY);
         // eslint-disable-next-line no-console
